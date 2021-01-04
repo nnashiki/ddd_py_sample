@@ -1,5 +1,6 @@
 from injector import Injector, inject, Module, singleton, provider
 from ec.domain.service.user import UserService
+from ec.app.user import UserAppService
 from ec.infra.interface.user import IUserRepository
 from ec.infra.memory.user import UserInMemoryRepository
 
@@ -13,15 +14,21 @@ class DatabaseModule(Module):
 
     @provider
     @singleton
-    def provide_repo(self, repo: UserInMemoryRepository) -> UserInMemoryRepository:
+    def provide_repo(self, repo: IUserRepository) -> UserInMemoryRepository:
         return repo
 
 
-if __name__ == "__main__":
+def startup() -> UserAppService:
+    """依存解決を実行"""
     injector = Injector([configure_for_testing, DatabaseModule()])
-    user_service = injector.get(UserService)
-    created_user = user_service.create_user('foo')
+    return injector.get(UserAppService)
+
+
+if __name__ == "__main__":
+    user_app_service = startup()
+
+    created_user = user_app_service.register('foo')
     print(created_user.identity)
-    stored_user = user_service.find_by_identity(created_user.identity)
+    stored_user = user_app_service.show(created_user.identity)
 
     # assert created_user == stored_user

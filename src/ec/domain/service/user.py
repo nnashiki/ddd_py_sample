@@ -6,16 +6,15 @@ from ec.domain.model.user import User
 
 
 class UserService:
-    """ User Service on Application Layer"""
+    """ ドメイン の中の不自然な処理を肩代わり"""
 
-    @inject
-    def __init__(self, repo: IUserRepository):
-        self.repo = repo
+    def __init__(self, user_repo: IUserRepository):
+        self.user_repo = user_repo
 
-    def create_user(self, name):
+    def create_user(self, name) -> User:
         user = User(uuid.uuid4(), name)
-        self.repo.store(user)
+        self.user_repo.store(user)
         return user
 
-    def find_by_identity(self, identity: uuid):
-        return self.repo.find_by_identity(identity)
+    def find_by_identity(self, identity: uuid) -> User:
+        return self.user_repo.find_by_identity(identity)

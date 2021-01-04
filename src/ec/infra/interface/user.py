@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from ec.domain.model.user import User
 import uuid
 
 
@@ -10,5 +11,5 @@ class IUserRepository:
         pass
 
     @abstractmethod
-    def store(self):
+    def store(self, user: User):
         pass
