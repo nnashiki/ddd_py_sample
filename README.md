@@ -1,6 +1,9 @@
 # ddd_py_sample
 PythonでDDDしてみるsample
 
+```
+export PYTHONPATH="/Users/niten.nashiki/ghq/github.com/nnashiki/ddd_py_sample/src:$PYTHONPATH"
+```
 
 # CLI
 
